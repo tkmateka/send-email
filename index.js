@@ -38,7 +38,7 @@ transporter.verify((err, success) => {
     console.log('Your config is correct');
 });
 
-const ordersEmail = 'orders@nationwideprintingandsignage.co.za'; // the receiver email: 
+const ordersEmail = 'orders@nationwideprintingandsignage.co.za, sender@nationwideprintingandsignage.co.za'; // the receiver email: 
 
 app.post('/send-mail', (req, res) => {
     console.log(req.body)
