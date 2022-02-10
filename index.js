@@ -50,7 +50,7 @@ app.post('/send-mail', (req, res) => {
         subject: subject,
         html: `
             <div>
-                <p>Hi, you have a neworder</p>
+                <p>Hi, you have a new order</p>
                 <div>
                     <p>Customer Full Name: <b>${data.firstName} ${data.lastName}</b></p>
                     <p>Customer Phone Number: <b>${data.phoneNumber}</b></p>
