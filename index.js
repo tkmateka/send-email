@@ -5,7 +5,7 @@ const app = express();
 const cors = require('cors');
 
 const corsOptions = {
-    origin: 'https://www.nationwideprintingandsignage.co.za/',
+    origin: 'https://www.nationwideprintingandsignage.co.za',
     optionsSuccessStatus: 200 // For legacy browser support
 }
 
