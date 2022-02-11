@@ -5,7 +5,7 @@ const app = express();
 const cors = require('cors');
 
 const corsOptions = {
-    origin: 'https://www.nationwideprintingandsignage.co.za',
+    origin: 'http://localhost:4200/', //'https://www.nationwideprintingandsignage.co.za',
     optionsSuccessStatus: 200 // For legacy browser support
 }
 
@@ -23,7 +23,7 @@ app.listen(port, () => {
 
 // create reusable transporter object using the default SMTP transport
 const transporter = nodemailer.createTransport({
-    host: 'nationwideprintingandsignage.co.za',
+    host: 'smtp.office365.com',
     port: 465,
     secure: true, // upgrades later with STARTTLS -- change this based on the PORT
     auth: {
