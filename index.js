@@ -4,16 +4,22 @@ const nodemailer = require('nodemailer');
 const app = express();
 const cors = require('cors');
 
-const corsOptions = {
-    origin: 'https://www.nationwideprintingandsignage.co.za',
-    optionsSuccessStatus: 200 // For legacy browser support
-}
-
 // Parse incoming requests data (https://github.com/expressjs/body-parser)
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
-app.use(cors(corsOptions));
+const allowlist = ['http://localhost:4200', 'https://www.nationwideprintingandsignage.co.za'];
+const corsOptionsDelegate = (req, callback) => {
+    let corsOptions;
+    if (allowlist.indexOf(req.header('Origin')) !== -1) {
+        corsOptions = { origin: true } // reflect (enable) the requested origin in the CORS response
+    } else {
+        corsOptions = { origin: false } // disable CORS for this request
+    }
+    callback(null, corsOptions) // callback expects two parameters: error and options
+}
+
+app.use(cors(corsOptionsDelegate));
 
 const port = process.env.PORT || 5000;
 
@@ -23,18 +29,18 @@ app.listen(port, () => {
 
 // create reusable transporter object using the default SMTP transport
 const transporter = nodemailer.createTransport({
-    host: 'nationwideprintingandsignage.co.za',
+    host: 'mail.nationwideprintingandsignage.co.za',
     port: 465,
-    secure: true, // upgrades later with STARTTLS -- change this based on the PORT
+    secure: true,
     auth: {
-        user: 'info@nationwideprintingandsignage.co.za',
-        pass: '?Jt8a^oc7&7-',
+        user: 'sender@nationwideprintingandsignage.co.za',
+        pass: '%[nj+t!!UU*$',
     },
 });
 
 // Verify Config
 transporter.verify((err, success) => {
-    if (err) console.error(err);
+    if (err) return console.error(1, err);
     console.log('Your config is correct');
 });
 
@@ -45,7 +51,7 @@ app.post('/send-mail', (req, res) => {
     const { subject, data } = req.body;
 
     const mailData = {
-        from: 'info@nationwideprintingandsignage.co.za',  // sender address
+        from: 'sender@nationwideprintingandsignage.co.za',  // sender address
         to: ordersEmail,   // list of receivers
         subject: subject,
         html: `
@@ -75,7 +81,7 @@ app.post('/send-mail', (req, res) => {
 
     transporter.sendMail(mailData, (err, info) => {
         if (err) {
-            return console.log(err)
+            return console.log(2, err)
         }
         res.status(200).send({ message: "Request Sent", message_id: info.messageId })
     });
